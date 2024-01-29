@@ -13,7 +13,7 @@ public class RequestUserDto {
     private String userId;
     private String fullName;
     private String email;
-    private String avatarUrl;
+    private byte[] avatarUrl;
     private String password;
     private boolean status;
 }
