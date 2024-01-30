@@ -3,6 +3,7 @@ package com.eadp.userserviceapi.service.impl;
 import com.eadp.userserviceapi.dto.paginate.PaginateUsersResponseDto;
 import com.eadp.userserviceapi.dto.request.RequestUserDto;
 import com.eadp.userserviceapi.dto.response.ResponseUserDto;
+import com.eadp.userserviceapi.repo.UserRepo;
 import com.eadp.userserviceapi.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
+    private final UserRepo userRepo;
+    public UserServiceImpl(UserRepo userRepo){
+        this.userRepo=userRepo;
+    }
+
     @Override
     public void createUser(RequestUserDto dto) {
 
