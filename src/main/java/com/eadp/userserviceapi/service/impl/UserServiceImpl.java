@@ -10,6 +10,8 @@ import com.eadp.userserviceapi.util.KeyManager;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -43,15 +45,47 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(RequestUserDto dto, String userId) {
 
+        Optional<User> selectedUser=userRepo.findUsersByUserId(userId);
+        if(selectedUser.isEmpty()) throw new RuntimeException();
+
+        selectedUser.get().setEmail(dto.getEmail());
+        selectedUser.get().setFullName(dto.getFullName());
+        selectedUser.get().setAvatarUrl(dto.getAvatarUrl().getBytes());
+        selectedUser.get().setStatus(dto.isStatus());
+
+        userRepo.save(selectedUser.get());
+
+
     }
 
     @Override
     public ResponseUserDto findUser(String userId) {
-        return null;
+
+        Optional<User> selectedUser=userRepo.findUsersByUserId(userId);
+        if(selectedUser.isEmpty()) throw new RuntimeException();
+
+        //String avatar=new String(selectedUser.get().getAvatarUrl(), StandardCharsets.UTF_8);
+
+        return new ResponseUserDto(
+                selectedUser.get().getUserId(),
+                selectedUser.get().getFullName(),
+                selectedUser.get().getEmail(),
+                "avatar",
+                selectedUser.get().isStatus()
+
+        );
+
+
     }
 
     @Override
     public void deleteUser(String userId) {
+
+        Optional<User> selectedUser=userRepo.findUsersByUserId(userId);
+        if(selectedUser.isEmpty()) throw new RuntimeException();
+
+        userRepo.delete(selectedUser.get());
+
 
     }
 

@@ -25,19 +25,21 @@ public class UserController {
     @PutMapping("/{userId}")
     public String updateUser(@RequestBody RequestUserDto dto,@PathVariable String userId){
 
-        return "updateuser";
+       userService.updateUser(dto,userId);
+       return dto.getFullName() +"was Updated";
     }
 
     @GetMapping("/{userId}")
     public String findUser(@PathVariable String userId){
 
-        return "findUser";
+        return  userService.findUser(userId).toString();
     }
 
     @DeleteMapping("/{userId}")
     public String deleteUser(@PathVariable String userId){
 
-        return "deleteUser";
+        userService.deleteUser(userId);
+        return userId +"was deleted";
     }
 
     @GetMapping(value = "/list",params =  {"page","size","searchText"})
